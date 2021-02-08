@@ -3,9 +3,9 @@
 
 ## Setup
 
-``bash
+```sh
 npm i monaco-editor
-``
+```
 
 ## Reference
 
