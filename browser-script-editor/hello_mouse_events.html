@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+	<link rel="stylesheet" data-name="vs/editor/editor.main"
+		href="../node_modules/monaco-editor/min/vs/editor/editor.main.css" />
+		<style>
+			.myGlyphMarginClass {
+				background: red;
+				/* border-radius: 15px 50px;*/
+				border-radius: 25px;
+			}
+			.myContentClass {
+				background: lightblue;
+			}
+
+		</style>
+</head>
+
+<body>
+	<h2>Monaco Editor: Mouse events</h2>
+
+	<div id="output" style="height:29%;font-family:'Courier New', monospace;">Last 3 events:<br/></div>
+	<div id="container" style="width: 800px; height: 600px; border: 1px solid grey"></div>
+
+	<script>
+		var require = { paths: { vs: '../node_modules/monaco-editor/min/vs' } };
+	</script>
+	<script src="../node_modules/monaco-editor/min/vs/loader.js"></script>
+	<script src="../node_modules/monaco-editor/min/vs/editor/editor.main.nls.js"></script>
+	<script src="../node_modules/monaco-editor/min/vs/editor/editor.main.js"></script>
+
+	<script>
+
+		// Tool: https://www.base64encode.net/
+		var encoded_text = "I2luY2x1ZGUgPHN0ZGlvLmg+IC8vIHByaW50ZigpIGZ1bmN0aW9uDQoNCi8qDQogIFRoaXMgaXMgYSBzYW1wbGUgaGVsbG8gd29ybGQgcHJvZ3JhbSBpbiBDDQoqLw0KaW50IG1haW4oaW50IGFyZ2MsIGNoYXIgKmFyZ3ZbIF0gKSANCnsNCiAgICBjaGFyIG5hbWVbMTAwXTsNCiAgICBwcmludGYoIkVudGVyIHlvdXIgbmFtZTogIik7DQogICAgc2NhbmYoIiVzIiwgbmFtZSk7DQogICAgcHJpbnRmKCJIZWxsbyBXb3JsZCwgJXMhXG4iLCBuYW1lKTsNCiAgICByZXR1cm4gMDsNCn0=";
+
+		// options
+		// https://microsoft.github.io/monaco-editor/api/interfaces/monaco.editor.istandaloneeditorconstructionoptions.html
+		var editor = monaco.editor.create(document.getElementById('container'), {
+			value: atob(encoded_text),
+			language: 'c',
+			glyphMargin: true,
+			lineNumbersMinChars: 3,
+		});
+
+		/*
+		var editor = monaco.editor.create(document.getElementById('container'), {
+			value: ['function x() {', '\tconsole.log("Hello world!");', '}'].join('\n'),
+			language: 'javascript',
+			//contextmenu: false,
+			glyphMargin: true,
+		});
+		*/
+
+		// Reference: https://microsoft.github.io/monaco-editor/api/interfaces/monaco.editor.istandalonecodeeditor.html#deltadecorations
+		var decorations = editor.deltaDecorations([], [
+		{
+				range: new monaco.Range(2,1,5,1),
+				options: {
+					isWholeLine: true,
+					className: 'myContentClass',
+					glyphMarginClassName: 'myGlyphMarginClass',
+				}
+			}
+		]);
+
+		// Add a zone to make hit testing more interesting
+		var viewZoneId = null;
+		editor.changeViewZones(function(changeAccessor) {
+				var domNode = document.createElement('div');
+				domNode.style.background = 'lightgreen';
+				domNode.textContent = "This is a light green zone";
+				viewZoneId = changeAccessor.addZone({
+							afterLineNumber: 3,
+							heightInLines: 5,
+							domNode: domNode
+				});
+		});
+
+		var output = document.getElementById('output');
+
+function showEvent(str) {
+	while(output.childNodes.length > 6) {
+		output.removeChild(output.firstChild.nextSibling.nextSibling);
+	}
+	output.appendChild(document.createTextNode(str));
+	output.appendChild(document.createElement('br'));
+}
+
+// Reference: https://microsoft.github.io/monaco-editor/api/interfaces/monaco.editor.ieditormouseevent.html#event
+// https://microsoft.github.io/monaco-editor/api/interfaces/monaco.imouseevent.html
+// https://microsoft.github.io/monaco-editor/api/interfaces/monaco.editor.imousetarget.html
+// https://microsoft.github.io/monaco-editor/api/enums/monaco.editor.mousetargettype.html
+function eventToString(e) {
+	var event = e.event;
+	var target = e.target;
+	return [
+		`altKey: ${event.altKey}`,
+		`detail: ${target.detail}`,
+		`range: ${target.range}`,
+		`type: ${target.type}`,
+	].join(", ");
+}
+
+
+editor.onMouseMove(function (e) {
+	showEvent('mousemove - ' +  e.event.toString() + " " + e.target.toString());
+	//showEvent('mousemove - ' + eventToString(e));
+});
+editor.onMouseDown(function (e) {
+	showEvent('mousedown - ' +  e.event.toString() + " " + e.target.toString());
+	//showEvent('mousedown - ' + eventToString(e));
+});
+editor.onContextMenu(function (e) {
+	showEvent('contextmenu - ' +  e.event.toString() + " " + e.target.toString());
+	//showEvent('contextmenu - ' + eventToString(e));
+});
+editor.onMouseLeave(function (e) {
+	showEvent('mouseleave');
+});
+	</script>
+</body>
+
+</html>

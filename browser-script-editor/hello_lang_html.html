@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+		<link
+			rel="stylesheet"
+			data-name="vs/editor/editor.main"
+			href="../node_modules/monaco-editor/min/vs/editor/editor.main.css"
+		/>
+	</head>
+	<body>
+		<h2>Monaco Editor: HTML </h2>
+		<div id="container" style="width: 800px; height: 600px; border: 1px solid grey"></div>
+
+		<script>
+			var require = { paths: { vs: '../node_modules/monaco-editor/min/vs' } };
+		</script>
+		<script src="../node_modules/monaco-editor/min/vs/loader.js"></script>
+		<script src="../node_modules/monaco-editor/min/vs/editor/editor.main.nls.js"></script>
+		<script src="../node_modules/monaco-editor/min/vs/editor/editor.main.js"></script>
+
+		<script>
+			// Tool: https://www.base64encode.net/
+			var encoded_text = "PCFET0NUWVBFIGh0bWw+DQo8aHRtbD4NCjxoZWFkPg0KICA8dGl0bGU+TW9uYXJjaCBXb3JrYmVuY2g8L3RpdGxlPg0KDQogIDxtZXRhIGh0dHAtZXF1aXY9IlgtVUEtQ29tcGF0aWJsZSIgY29udGVudD0iSUU9ZWRnZSIgLz4NCiAgPCEtLSBhIGNvbW1lbnQNCiAgLS0+DQogIDxzdHlsZT4NCiAgICBib2R5IHsgZm9udC1mYW1pbHk6IENvbnNvbGFzOyB9IC8qIG5pY2UgKi8NCiAgPC9zdHlsZT4NCjwvaGVhZD4NCjxib2R5Pg0KICA8ZGl2IGNsYXNzPSJ0ZXN0Ij4NCiAgICA8c2NyaXB0Pg0KICAgICAgZnVuY3Rpb24oKSB7DQogICAgICAgIGFsZXJ0KCJoaSA8L3NjcmlwdD4iKTsgLy8gamF2YXNjcmlwdA0KICAgICAgfTsNCiAgICA8L3NjcmlwdD4NCiAgICA8c2NyaXB0IHR5cGU9InRleHQveC1kYWZueSI+DQogICAgICBjbGFzcyBGb28gew0KICAgICAgICB4IDogaW50Ow0KICAgICAgICBpbnZhcmlhbnQgeCA+IDA7DQogICAgICB9Ow0KICAgIDwvc2NyaXB0Pg0KICA8L2Rpdj4NCjwvYm9keT4NCjwvaHRtbD4NCg==";
+
+			// options
+			// https://microsoft.github.io/monaco-editor/api/interfaces/monaco.editor.istandaloneeditorconstructionoptions.html
+			var editor = monaco.editor.create(document.getElementById('container'), {
+				value: atob(encoded_text),
+				language: 'html'
+			});
+
+		</script>
+	</body>
+</html>

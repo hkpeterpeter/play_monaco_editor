@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+		<link
+			rel="stylesheet"
+			data-name="vs/editor/editor.main"
+			href="../node_modules/monaco-editor/min/vs/editor/editor.main.css"
+		/>
+	</head>
+	<body>
+		<h2>Monaco Editor: C language</h2>
+		<div id="container" style="width: 800px; height: 600px; border: 1px solid grey"></div>
+
+		<script>
+			var require = { paths: { vs: '../node_modules/monaco-editor/min/vs' } };
+		</script>
+		<script src="../node_modules/monaco-editor/min/vs/loader.js"></script>
+		<script src="../node_modules/monaco-editor/min/vs/editor/editor.main.nls.js"></script>
+		<script src="../node_modules/monaco-editor/min/vs/editor/editor.main.js"></script>
+
+		<script>
+			// Tool: https://www.base64encode.net/
+			var encoded_text = "I2luY2x1ZGUgPHN0ZGlvLmg+IC8vIHByaW50ZigpIGZ1bmN0aW9uDQoNCi8qDQogIFRoaXMgaXMgYSBzYW1wbGUgaGVsbG8gd29ybGQgcHJvZ3JhbSBpbiBDDQoqLw0KaW50IG1haW4oaW50IGFyZ2MsIGNoYXIgKmFyZ3ZbIF0gKSANCnsNCiAgICBjaGFyIG5hbWVbMTAwXTsNCiAgICBwcmludGYoIkVudGVyIHlvdXIgbmFtZTogIik7DQogICAgc2NhbmYoIiVzIiwgbmFtZSk7DQogICAgcHJpbnRmKCJIZWxsbyBXb3JsZCwgJXMhXG4iLCBuYW1lKTsNCiAgICByZXR1cm4gMDsNCn0=";
+
+			// options
+			// https://microsoft.github.io/monaco-editor/api/interfaces/monaco.editor.istandaloneeditorconstructionoptions.html
+			var editor = monaco.editor.create(document.getElementById('container'), {
+				value: atob(encoded_text),
+				language: 'c'
+			});
+
+		</script>
+	</body>
+</html>
